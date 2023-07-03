@@ -9,4 +9,12 @@ const totalLikes = (blogs) => {
   return blogs.reduce(reducer, 0)
 }
 
-module.exports = { dummy, totalLikes }
+const favouriteBlog = (blogs) => {
+  if (blogs.length === 0) return null
+
+  const likes = blogs.map((blog) => blog.likes)
+  const maxIndex = likes.indexOf(Math.max(...likes))
+  return blogs[maxIndex]
+}
+
+module.exports = { dummy, totalLikes, favouriteBlog }
