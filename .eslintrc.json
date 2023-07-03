@@ -3,7 +3,8 @@
   "env": {
     "browser": true,
     "commonjs": true,
-    "es2021": true
+    "es2021": true,
+    "jest": true
   },
   "extends": ["airbnb-base", "prettier"],
   "overrides": [],
@@ -12,7 +13,7 @@
   },
   "rules": {
     "prettier/prettier": "off",
-    "no-console": "off",
+    "no-console": "error",
     "prefer-destructuring": "off",
     "no-underscore-dangle": "off"
   }
