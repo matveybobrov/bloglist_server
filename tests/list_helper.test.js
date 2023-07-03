@@ -89,3 +89,49 @@ describe('favourite blog', () => {
     expect(result).toEqual(blogs[2])
   })
 })
+
+describe('most blogs', () => {
+  test('for empty array returns null', () => {
+    const result = listHelper.mostBlogs([])
+    expect(result).toBe(null)
+  })
+
+  test("for one blog returns it's author and 1 blog", () => {
+    const result = listHelper.mostBlogs([blogs[0]])
+    expect(result).toEqual({
+      author: 'Michael Chan',
+      blogs: 1,
+    })
+  })
+
+  test('for bigger array is calculated correctly', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3,
+    })
+  })
+})
+
+describe('most likes', () => {
+  test('for empty array returns null', () => {
+    const result = listHelper.mostLikes([])
+    expect(result).toBe(null)
+  })
+
+  test("for one blog returns it's author and likes", () => {
+    const result = listHelper.mostLikes([blogs[0]])
+    expect(result).toEqual({
+      author: 'Michael Chan',
+      likes: 7,
+    })
+  })
+
+  test('for bigger array is calculated correctly', () => {
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17,
+    })
+  })
+})

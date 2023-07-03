@@ -17,4 +17,38 @@ const favouriteBlog = (blogs) => {
   return blogs[maxIndex]
 }
 
-module.exports = { dummy, totalLikes, favouriteBlog }
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) return null
+
+  const authors = blogs.map((blog) => blog.author)
+  const count = Array(authors.length).fill(0)
+
+  blogs.forEach((blog) => {
+    count[authors.indexOf(blog.author)] += 1
+  })
+
+  const maxBlogsIndex = count.indexOf(Math.max(...count))
+  return {
+    author: authors[maxBlogsIndex],
+    blogs: count[maxBlogsIndex],
+  }
+}
+
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) return null
+
+  const authors = blogs.map((blog) => blog.author)
+  const likes = Array(authors.length).fill(0)
+
+  blogs.forEach((blog) => {
+    likes[authors.indexOf(blog.author)] += blog.likes
+  })
+
+  const maxLikesIndex = likes.indexOf(Math.max(...likes))
+  return {
+    author: authors[maxLikesIndex],
+    likes: likes[maxLikesIndex],
+  }
+}
+
+module.exports = { dummy, totalLikes, favouriteBlog, mostBlogs, mostLikes }
