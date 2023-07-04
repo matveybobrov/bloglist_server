@@ -76,6 +76,32 @@ describe('posting a blog', () => {
   }, 100000)
 })
 
+describe('deleting a blog', () => {
+  test('successfully deletes with existing id', async () => {
+    const blogsBefore = await helper.blogsInDb()
+    const blogToDelete = blogsBefore[0]
+    const idToDelete = blogToDelete.id
+
+    await api.delete(`/api/blogs/${idToDelete}`).expect(204)
+
+    const blogsAfter = await helper.blogsInDb()
+    const idsAfter = blogsAfter.map((blog) => blog.id)
+    expect(blogsAfter).toHaveLength(blogsBefore.length - 1)
+    expect(idsAfter).not.toContain(blogToDelete.id)
+  }, 100000)
+
+  test('returns status code 400 with not existing id', async () => {
+    const blogsBefore = await helper.blogsInDb()
+
+    const id = helper.notExistingId
+    await api.delete(`/api/blogs/${id}`).expect(400)
+
+    const blogsAfter = await helper.blogsInDb()
+
+    expect(blogsAfter).toHaveLength(blogsBefore.length)
+  })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 }, 100000)
