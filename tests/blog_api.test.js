@@ -52,6 +52,20 @@ describe('posting a blog', () => {
     const titles = blogsAfter.map((blog) => blog.title)
     expect(titles).toContain(helper.notExistingBlog.title)
   }, 100000)
+
+  test('sets likes to 0 if missing', async () => {
+    const blog = helper.notExistingBlog
+    delete blog.likes
+
+    await api
+      .post('/api/blogs')
+      .send(blog)
+      .expect(201)
+      .expect('Content-type', /application\/json/)
+
+    const blogs = await helper.blogsInDb()
+    expect(blogs[blogs.length - 1].likes).toBe(0)
+  }, 100000)
 })
 
 afterAll(async () => {
