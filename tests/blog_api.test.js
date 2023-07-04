@@ -66,6 +66,14 @@ describe('posting a blog', () => {
     const blogs = await helper.blogsInDb()
     expect(blogs[blogs.length - 1].likes).toBe(0)
   }, 100000)
+
+  test('fails with status code 400 if title or url is missing', async () => {
+    const blog = helper.notExistingBlog
+    delete blog.title
+    delete blog.url
+
+    await api.post('/api/blogs').send(blog).expect(400)
+  }, 100000)
 })
 
 afterAll(async () => {
