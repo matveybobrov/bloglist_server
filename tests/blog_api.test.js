@@ -20,6 +20,11 @@ describe('fetching all blogs', () => {
       .expect('Content-Type', /application\/json/)
   }, 100000)
 
+  test('documents id are defined as id property', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+  })
+
   test('all documents are returned', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(helper.initialBlogs.length)
