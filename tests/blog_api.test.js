@@ -102,6 +102,32 @@ describe('deleting a blog', () => {
   })
 })
 
+describe('updating blog likes count', () => {
+  test('updates correctly with existing id', async () => {
+    const blogsBefore = await helper.blogsInDb()
+    const blog = blogsBefore[0]
+    const newLikes = blog.likes + 1
+
+    const request = await api
+      .put(`/api/blogs/${blog.id}`)
+      .send({ ...blog, likes: newLikes })
+      .expect(200)
+      .expect('Content-type', /application\/json/)
+
+    const updatedBlog = request.body
+    const blogsAfter = await helper.blogsInDb()
+    expect(updatedBlog.likes).toBe(newLikes)
+    expect(blogsBefore).toHaveLength(blogsAfter.length)
+  }, 100000)
+
+  test('fails with not existing id', async () => {
+    await api
+      .put(`/api/blogs/${helper.notExistingId}`)
+      .send({ ...helper.notExistingBlog })
+      .expect(400)
+  }, 100000)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 }, 100000)
