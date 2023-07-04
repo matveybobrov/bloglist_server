@@ -37,6 +37,24 @@ describe('fetching all blogs', () => {
   }, 100000)
 })
 
+describe('fetching a single blog', () => {
+  test('returns a blog with correct id', async () => {
+    const blogs = await helper.blogsInDb()
+    const id = blogs[0].id
+
+    const response = await api
+      .get(`/api/blogs/${id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body.id).toBe(id)
+  }, 100000)
+
+  test('fails with not existing id', async () => {
+    await api.get(`/api/blogs/${helper.notExistingId}`).expect(400)
+  }, 100000)
+})
+
 describe('posting a blog', () => {
   test('succeeds with valid data', async () => {
     await api
@@ -108,13 +126,13 @@ describe('updating blog likes count', () => {
     const blog = blogsBefore[0]
     const newLikes = blog.likes + 1
 
-    const request = await api
+    const response = await api
       .put(`/api/blogs/${blog.id}`)
       .send({ ...blog, likes: newLikes })
       .expect(200)
       .expect('Content-type', /application\/json/)
 
-    const updatedBlog = request.body
+    const updatedBlog = response.body
     const blogsAfter = await helper.blogsInDb()
     expect(updatedBlog.likes).toBe(newLikes)
     expect(blogsBefore).toHaveLength(blogsAfter.length)
