@@ -1,5 +1,12 @@
 const Blog = require('../models/blog')
 
+const notExistingBlog = {
+  title: 'This blog will be removed soon',
+  author: 'No author',
+  url: 'http://notExistingURL.html',
+  likes: 10,
+}
+
 const initialBlogs = [
   {
     title: 'React patterns',
@@ -40,12 +47,7 @@ const initialBlogs = [
 ]
 
 const notExistingId = async () => {
-  const blog = new Blog({
-    title: 'This blog will be removed soon',
-    author: 'No author',
-    url: 'http://notExistingURL.html',
-    likes: 10,
-  })
+  const blog = new Blog({ notExistingBlog })
   await blog.save()
   await blog.deleteOne()
 
@@ -57,4 +59,4 @@ const blogsInDb = async () => {
   return blogs
 }
 
-module.exports = { initialBlogs, notExistingId, blogsInDb }
+module.exports = { initialBlogs, notExistingBlog, notExistingId, blogsInDb }

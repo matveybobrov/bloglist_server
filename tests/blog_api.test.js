@@ -23,7 +23,7 @@ describe('fetching all blogs', () => {
   test('documents id are defined as id property', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body[0].id).toBeDefined()
-  })
+  }, 100000)
 
   test('all documents are returned', async () => {
     const response = await api.get('/api/blogs')
@@ -34,6 +34,23 @@ describe('fetching all blogs', () => {
     const response = await api.get('/api/blogs')
     const titles = response.body.map((blog) => blog.title)
     expect(titles).toContain(helper.initialBlogs[0].title)
+  }, 100000)
+})
+
+describe('posting a blog', () => {
+  test('succeeds with valid data', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.notExistingBlog)
+      .expect(201)
+      .expect('Content-type', /application\/json/)
+
+    const blogsAfter = await helper.blogsInDb()
+
+    expect(blogsAfter).toHaveLength(helper.initialBlogs.length + 1)
+
+    const titles = blogsAfter.map((blog) => blog.title)
+    expect(titles).toContain(helper.notExistingBlog.title)
   }, 100000)
 })
 
