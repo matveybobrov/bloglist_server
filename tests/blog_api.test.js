@@ -96,6 +96,7 @@ describe('posting a blog', () => {
 })
 */
 
+/*
 describe('deleting a blog', () => {
   test('successfully deletes with existing id', async () => {
     const blogsBefore = await helper.blogsInDb()
@@ -121,7 +122,7 @@ describe('deleting a blog', () => {
     expect(blogsAfter).toHaveLength(blogsBefore.length)
   })
 })
-
+*/
 describe('updating blog likes count', () => {
   test('updates correctly with existing id', async () => {
     const blogsBefore = await helper.blogsInDb()

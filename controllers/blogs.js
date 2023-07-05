@@ -14,7 +14,10 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.get('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id).populate('user')
-  response.json(blog)
+  if (blog === null) {
+    return response.status(404).end()
+  }
+  return response.json(blog)
 })
 
 blogsRouter.post('/', async (request, response) => {
@@ -46,8 +49,29 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (user === null) {
+    return response
+      .status(401)
+      .json({ error: 'no such user in database with provided token' })
+  }
+  const blog = await Blog.findById(request.params.id)
+
+  if (blog.user.toString() === user.id) {
+    await Blog.findByIdAndRemove(request.params.id)
+    const blogs = user.blogs.filter((b) => b.id !== blog.id)
+    user.blogs = blogs
+    await user.save()
+  } else {
+    return response.status(401).json({ error: 'no permission do delete' })
+  }
+  return response.status(204).end()
 })
 
 blogsRouter.put('/:id', async (request, response) => {
