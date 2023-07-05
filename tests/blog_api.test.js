@@ -57,10 +57,16 @@ describe('fetching a single blog', () => {
 
 /*
 describe('posting a blog', () => {
-  test('succeeds with valid data', async () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+    await User.insertMany([helper.validUser])
+  }, 100000)
+
+  test('succeeds with valid data and token', async () => {
     await api
       .post('/api/blogs')
       .send(helper.notExistingBlog)
+      .set('Authorization', `Bearer ${helper.validToken}`)
       .expect(201)
       .expect('Content-type', /application\/json/)
 
@@ -95,7 +101,6 @@ describe('posting a blog', () => {
   }, 100000)
 })
 */
-
 /*
 describe('deleting a blog', () => {
   test('successfully deletes with existing id', async () => {
