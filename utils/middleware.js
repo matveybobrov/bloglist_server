@@ -21,6 +21,8 @@ const errorHandler = (error, req, res, next) => {
       return res.status(400).json({ error: 'malformatted id' })
     case 'ValidationError':
       return res.status(400).json({ error: error.message })
+    case 'JsonWebTokenError':
+      return res.status(400).json({ error: error.message })
     default:
       next(error)
   }

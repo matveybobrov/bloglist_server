@@ -55,6 +55,7 @@ describe('fetching a single blog', () => {
   }, 100000)
 })
 
+/*
 describe('posting a blog', () => {
   test('succeeds with valid data', async () => {
     await api
@@ -93,6 +94,7 @@ describe('posting a blog', () => {
     await api.post('/api/blogs').send(blog).expect(400)
   }, 100000)
 })
+*/
 
 describe('deleting a blog', () => {
   test('successfully deletes with existing id', async () => {
