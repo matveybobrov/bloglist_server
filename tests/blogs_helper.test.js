@@ -1,11 +1,6 @@
 const blogsHelper = require('../utils/blogs_helper')
 const helper = require('./test_helper')
 
-test('dummy returns one', () => {
-  const result = blogsHelper.dummy([])
-  expect(result).toBe(1)
-})
-
 describe('total likes', () => {
   test('of empty list is zero', () => {
     const result = blogsHelper.totalLikes([])

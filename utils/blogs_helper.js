@@ -1,5 +1,3 @@
-const dummy = () => 1
-
 const totalLikes = (blogs) => {
   if (blogs.length === 1) return blogs[0].likes
   if (blogs.length === 0) return 0
@@ -51,4 +49,4 @@ const mostLikes = (blogs) => {
   }
 }
 
-module.exports = { dummy, totalLikes, favouriteBlog, mostBlogs, mostLikes }
+module.exports = { totalLikes, favouriteBlog, mostBlogs, mostLikes }

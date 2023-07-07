@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken')
-const User = require('../models/user')
+
 const logger = require('./logger')
+
+const User = require('../models/user')
 
 const requestLogger = (req, res, next) => {
   logger.info('Method:', req.method)
@@ -41,7 +43,6 @@ const unknownEndpoint = (req, res) => {
   res.status(404).json({ error: 'unknown endpoint' })
 }
 
-// eslint-disable-next-line consistent-return
 const errorHandler = (error, req, res, next) => {
   logger.error(error.message)
 
@@ -53,9 +54,8 @@ const errorHandler = (error, req, res, next) => {
     case 'JsonWebTokenError':
       return res.status(400).json({ error: error.message })
     default:
-      next(error)
+      return next(error)
   }
-  next(error)
 }
 
 module.exports = {
